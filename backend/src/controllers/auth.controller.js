@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
 
         if (!name || !name.trim()) {
             return res.status(400).json({
@@ -44,6 +44,7 @@ export const registerUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
+            role: role || "user",
         });
 
         return res.status(201).json({
@@ -87,6 +88,7 @@ export const loginUser = async (req, res) => {
             {
                 id: user._id,
                 email: user.email,
+                role: user.role,
             },
             process.env.JWT_SECRET,
             {

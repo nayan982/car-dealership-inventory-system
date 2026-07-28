@@ -12,6 +12,7 @@ describe("Search Vehicles", () => {
                 name: "Admin",
                 email: "admin@test.com",
                 password: "12345678",
+                role: "admin",
             });
 
         // Login

@@ -17,6 +17,30 @@ describe("User Registration", () => {
     expect(response.body.message).toBe("User registered successfully");
   });
 
+  test("should create an admin user with admin role", async () => {
+
+    const response = await request(app)
+      .post("/api/auth/register")
+      .send({
+        name: "Admin",
+        email: "admin@test.com",
+        password: "12345678",
+        role: "admin",
+      });
+
+
+    expect(response.status).toBe(201);
+
+
+    const user = await User.findOne({
+      email: "admin@test.com",
+    });
+
+
+    expect(user.role).toBe("admin");
+
+  });
+
   test("should not register a user with an existing email", async () => {
     await request(app)
       .post("/api/auth/register")

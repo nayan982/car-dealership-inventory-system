@@ -13,6 +13,7 @@ describe("Update Vehicle", () => {
                 name: "Admin",
                 email: "update@test.com",
                 password: "12345678",
+                role: "admin",
             });
 
 
