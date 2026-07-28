@@ -41,6 +41,7 @@ describe("User Login", () => {
 
         expect(response.status).toBe(401);
     });
+
     test("should return 404 if user does not exist", async () => {
 
         const response = await request(app)
@@ -54,6 +55,31 @@ describe("User Login", () => {
         expect(response.status).toBe(404);
         expect(response.body.message)
             .toBe("User not found");
+
+    });
+
+    test("should return JWT token after successful login", async () => {
+
+        await request(app)
+            .post("/api/auth/register")
+            .send({
+                name: "user",
+                email: "jwt@test.com",
+                password: "12345678",
+            });
+
+
+        const response = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "jwt@test.com",
+                password: "12345678",
+            });
+
+
+        expect(response.status).toBe(200);
+
+        expect(response.body).toHaveProperty("token");
 
     });
 });
