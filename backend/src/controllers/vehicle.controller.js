@@ -25,3 +25,21 @@ export const createVehicle = async (req, res) => {
 
   }
 };
+
+export const getVehicles = async (req, res) => {
+
+  try {
+
+    const vehicles = await Vehicle.find();
+
+    return res.status(200).json(vehicles);
+
+  } catch (error) {
+
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+
+  }
+
+};
