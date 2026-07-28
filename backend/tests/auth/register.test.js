@@ -12,5 +12,7 @@ describe("User Registration", () => {
       });
 
     expect(response.status).toBe(201);
+    expect(response.body).toHaveProperty("message");
+    expect(response.body.message).toBe("User registered successfully");
   });
 });
