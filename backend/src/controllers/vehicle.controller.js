@@ -200,3 +200,42 @@ export const purchaseVehicle = async (req, res) => {
     }
 
 };
+
+export const restockVehicle = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { quantity } = req.body;
+
+
+        const vehicle = await Vehicle.findById(id);
+
+
+        if (!vehicle) {
+            return res.status(404).json({
+                message: "Vehicle not found"
+            });
+        }
+
+
+        vehicle.quantity += quantity;
+
+        await vehicle.save();
+
+
+        return res.status(200).json({
+            message: "Vehicle restocked successfully",
+            vehicle
+        });
+
+
+    } catch(error) {
+
+        return res.status(500).json({
+            message: error.message
+        });
+
+    }
+
+};
