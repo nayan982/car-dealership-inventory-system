@@ -62,4 +62,37 @@ describe("Delete Vehicle", () => {
 
     });
 
+    test("should not allow normal user to delete vehicle", async () => {
+
+        await request(app)
+            .post("/api/auth/register")
+            .send({
+                name: "User",
+                email: "userdelete@test.com",
+                password: "12345678"
+            });
+
+
+        const login = await request(app)
+            .post("/api/auth/login")
+            .send({
+                email: "userdelete@test.com",
+                password: "12345678"
+            });
+
+
+        const token = login.body.token;
+
+
+        const response = await request(app)
+            .delete("/api/vehicles/someid")
+            .set(
+                "Authorization",
+                `Bearer ${token}`
+            );
+
+
+        expect(response.status).toBe(403);
+
+    });
 });
