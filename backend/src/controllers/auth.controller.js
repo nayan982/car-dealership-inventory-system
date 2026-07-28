@@ -1,8 +1,33 @@
 import User from "../models/User.js";
+import bcrypt from "bcrypt";
 
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    if (!name || !name.trim()) {
+      return res.status(400).json({
+        message: "Name is required",
+      });
+    }
+
+    if (!email || !email.trim()) {
+      return res.status(400).json({
+        message: "Email is required",
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        message: "Password is required",
+      });
+    }
+
+    if (password.length < 8) {
+      return res.status(400).json({
+        message: "Password must be at least 8 characters long",
+      });
+    }
 
     const existingUser = await User.findOne({ email });
 
@@ -12,10 +37,12 @@ export const registerUser = async (req, res) => {
       });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     await User.create({
       name,
       email,
-      password,
+      password: hashedPassword,
     });
 
     return res.status(201).json({
@@ -23,7 +50,7 @@ export const registerUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({
-      message: error.message,
+      message: "Internal Server Error",
     });
   }
 };
