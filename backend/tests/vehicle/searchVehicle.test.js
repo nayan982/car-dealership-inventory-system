@@ -1,22 +1,29 @@
 import request from "supertest";
 import app from "../../app.js";
+import bcrypt from "bcrypt";
+import User from "../../src/models/User.js";
 
 describe("Search Vehicles", () => {
 
     test("should search vehicle by make", async () => {
 
-        // Register
-        await request(app)
-            .post("/api/auth/register")
-            .send({
-                name: "Admin",
-                email: "admin@test.com",
-                password: "12345678",
-                role: "admin",
-            });
+        // Create admin user directly
+        const hashedPassword = await bcrypt.hash(
+            "12345678",
+            10
+        );
 
-        // Login
-        const loginResponse = await request(app)
+        await User.create({
+            name: "Admin",
+            email: "admin@test.com",
+            password: hashedPassword,
+            role: "admin",
+        });
+
+        const agent = request.agent(app);
+
+        // Login admin
+        const loginResponse = await agent
             .post("/api/auth/login")
             .send({
                 email: "admin@test.com",
@@ -26,9 +33,8 @@ describe("Search Vehicles", () => {
         const token = loginResponse.body.token;
 
         // Vehicle 1
-        await request(app)
+        await agent
             .post("/api/vehicles")
-            .set("Authorization", `Bearer ${token}`)
             .send({
                 make: "Toyota",
                 model: "Fortuner",
@@ -38,9 +44,8 @@ describe("Search Vehicles", () => {
             });
 
         // Vehicle 2
-        await request(app)
+        await agent
             .post("/api/vehicles")
-            .set("Authorization", `Bearer ${token}`)
             .send({
                 make: "Honda",
                 model: "City",
@@ -49,9 +54,8 @@ describe("Search Vehicles", () => {
                 quantity: 8,
             });
 
-        const response = await request(app)
-            .get("/api/vehicles/search?make=Toyota")
-            .set("Authorization", `Bearer ${token}`);
+        const response = await agent
+            .get("/api/vehicles/search?make=Toyota");
 
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(1);
@@ -61,21 +65,26 @@ describe("Search Vehicles", () => {
 
     test("should filter vehicles by price range", async () => {
 
-        // Register
-        await request(app)
-            .post("/api/auth/register")
-            .send({
-                name: "Admin",
-                email: "admin2@test.com",
-                password: "12345678",
-            });
+        // Create admin user directly
+        const hashedPassword = await bcrypt.hash(
+            "12345678",
+            10
+        );
 
+        await User.create({
+            name: "Admin",
+            email: "admin@test.com",
+            password: hashedPassword,
+            role: "admin",
+        });
 
-        // Login
-        const loginResponse = await request(app)
+        const agent = request.agent(app);
+
+        // Login admin
+        const loginResponse = await agent
             .post("/api/auth/login")
             .send({
-                email: "admin2@test.com",
+                email: "admin@test.com",
                 password: "12345678",
             });
 
@@ -84,9 +93,8 @@ describe("Search Vehicles", () => {
 
 
         // Create vehicle 1
-        await request(app)
+        await agent
             .post("/api/vehicles")
-            .set("Authorization", `Bearer ${token}`)
             .send({
                 make: "Toyota",
                 model: "Fortuner",
@@ -97,9 +105,8 @@ describe("Search Vehicles", () => {
 
 
         // Create vehicle 2
-        await request(app)
+        await agent
             .post("/api/vehicles")
-            .set("Authorization", `Bearer ${token}`)
             .send({
                 make: "Honda",
                 model: "City",
@@ -109,10 +116,8 @@ describe("Search Vehicles", () => {
             });
 
 
-        const response = await request(app)
-            .get("/api/vehicles/search?minPrice=2000000")
-            .set("Authorization", `Bearer ${token}`);
-
+        const response = await agent
+            .get("/api/vehicles/search?minPrice=2000000");
 
         expect(response.status).toBe(200);
 

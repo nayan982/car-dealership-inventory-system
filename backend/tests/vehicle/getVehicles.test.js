@@ -1,61 +1,64 @@
 import request from "supertest";
 import app from "../../app.js";
+import bcrypt from "bcrypt";
+import User from "../../src/models/User.js";
 
 describe("Get Vehicles", () => {
 
-  test("should return all vehicles", async () => {
+    test("should return all vehicles", async () => {
 
-    // Register
-    await request(app)
-      .post("/api/auth/register")
-      .send({
-        name: "Admin",
-        email: "admin@test.com",
-        password: "12345678",
-        role: "admin",
-      });
+        // Create admin user directly
+        const hashedPassword = await bcrypt.hash(
+            "12345678",
+            10
+        );
 
-    // Login
-    const loginResponse = await request(app)
-      .post("/api/auth/login")
-      .send({
-        email: "admin@test.com",
-        password: "12345678",
-      });
+        await User.create({
+            name: "Admin",
+            email: "admin@test.com",
+            password: hashedPassword,
+            role: "admin",
+        });
 
-    const token = loginResponse.body.token;
+        const agent = request.agent(app);
+        // Login admin
+        const loginResponse = await agent
+            .post("/api/auth/login")
+            .send({
+                email: "admin@test.com",
+                password: "12345678",
+            });
 
-    // Create first vehicle
-    await request(app)
-      .post("/api/vehicles")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        make: "Toyota",
-        model: "Fortuner",
-        category: "SUV",
-        price: 4500000,
-        quantity: 10,
-      });
+        const token = loginResponse.body.token;
 
-    // Create second vehicle
-    await request(app)
-      .post("/api/vehicles")
-      .set("Authorization", `Bearer ${token}`)
-      .send({
-        make: "Honda",
-        model: "City",
-        category: "Sedan",
-        price: 1800000,
-        quantity: 7,
-      });
+        // Create first vehicle
+        await agent
+            .post("/api/vehicles")
+            .send({
+                make: "Toyota",
+                model: "Fortuner",
+                category: "SUV",
+                price: 4500000,
+                quantity: 10,
+            });
 
-    const response = await request(app)
-      .get("/api/vehicles")
-      .set("Authorization", `Bearer ${token}`);
+        // Create second vehicle
+        await agent
+            .post("/api/vehicles")
+            .send({
+                make: "Honda",
+                model: "City",
+                category: "Sedan",
+                price: 1800000,
+                quantity: 7,
+            });
 
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(2);
+        const response = await agent
+            .get("/api/vehicles");
 
-  });
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(2);
+
+    });
 
 });

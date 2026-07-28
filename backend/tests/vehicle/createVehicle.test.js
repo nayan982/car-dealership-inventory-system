@@ -1,34 +1,41 @@
 import request from "supertest";
 import app from "../../app.js";
+import bcrypt from "bcrypt";
+import User from "../../src/models/User.js";
 
 describe("Create Vehicle", () => {
 
   test("should create a new vehicle", async () => {
 
-    // Register
-    await request(app)
-      .post("/api/auth/register")
-      .send({
-        name: "Admin",
-        email: "admin@test.com",
-        password: "12345678",
-        role: "admin",
-      });
+    // Create admin user directly
+    const hashedPassword = await bcrypt.hash(
+      "12345678",
+      10
+    );
 
-    // Login
-    const loginResponse = await request(app)
+    await User.create({
+      name: "Admin",
+      email: "admin@test.com",
+      password: hashedPassword,
+      role: "admin",
+    });
+
+    const agent = request.agent(app);
+
+    // Login admin
+    const loginResponse = await agent
       .post("/api/auth/login")
       .send({
         email: "admin@test.com",
         password: "12345678",
       });
 
-    const token = loginResponse.body.token;
+    expect(loginResponse.status).toBe(200);
+
 
     // Create Vehicle
-    const response = await request(app)
+    const response = await agent
       .post("/api/vehicles")
-      .set("Authorization", `Bearer ${token}`)
       .send({
         make: "Toyota",
         model: "Fortuner",
@@ -37,8 +44,11 @@ describe("Create Vehicle", () => {
         quantity: 10,
       });
 
+
     expect(response.status).toBe(201);
-    expect(response.body.message).toBe("Vehicle added successfully");
+    expect(response.body.message)
+      .toBe("Vehicle added successfully");
+
   });
 
 });

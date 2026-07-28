@@ -1,40 +1,40 @@
 import request from "supertest";
 import app from "../../app.js";
+import bcrypt from "bcrypt";
+import User from "../../src/models/User.js";
 
 describe("Delete Vehicle", () => {
 
     test("should delete a vehicle by admin", async () => {
 
-        // Register admin
-        await request(app)
-            .post("/api/auth/register")
-            .send({
-                name: "Admin",
-                email: "delete@test.com",
-                password: "12345678",
-                role: "admin"
-            });
+        // Create admin user directly
+        const hashedPassword = await bcrypt.hash(
+            "12345678",
+            10
+        );
 
+        await User.create({
+            name: "Admin",
+            email: "admin@test.com",
+            password: hashedPassword,
+            role: "admin",
+        });
 
+        const agent = request.agent(app);
         // Login admin
-        const loginResponse = await request(app)
+        const loginResponse = await agent
             .post("/api/auth/login")
             .send({
-                email: "delete@test.com",
-                password: "12345678"
+                email: "admin@test.com",
+                password: "12345678",
             });
-
 
         const token = loginResponse.body.token;
 
 
         // Create vehicle
-        const vehicleResponse = await request(app)
+        const vehicleResponse = await agent
             .post("/api/vehicles")
-            .set(
-                "Authorization",
-                `Bearer ${token}`
-            )
             .send({
                 make: "Toyota",
                 model: "Fortuner",
@@ -48,13 +48,8 @@ describe("Delete Vehicle", () => {
 
 
         // Delete vehicle
-        const response = await request(app)
+        const response = await agent
             .delete(`/api/vehicles/${vehicleId}`)
-            .set(
-                "Authorization",
-                `Bearer ${token}`
-            );
-
 
         expect(response.status).toBe(200);
         expect(response.body.message)
@@ -63,8 +58,8 @@ describe("Delete Vehicle", () => {
     });
 
     test("should not allow normal user to delete vehicle", async () => {
-
-        await request(app)
+        const agent = request.agent(app);
+        await agent
             .post("/api/auth/register")
             .send({
                 name: "User",
@@ -73,7 +68,7 @@ describe("Delete Vehicle", () => {
             });
 
 
-        const login = await request(app)
+        const login = await agent
             .post("/api/auth/login")
             .send({
                 email: "userdelete@test.com",
@@ -84,13 +79,8 @@ describe("Delete Vehicle", () => {
         const token = login.body.token;
 
 
-        const response = await request(app)
+        const response = await agent
             .delete("/api/vehicles/someid")
-            .set(
-                "Authorization",
-                `Bearer ${token}`
-            );
-
 
         expect(response.status).toBe(403);
 

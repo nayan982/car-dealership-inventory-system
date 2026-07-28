@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password } = req.body;
 
         if (!name || !name.trim()) {
             return res.status(400).json({
@@ -30,6 +30,11 @@ export const registerUser = async (req, res) => {
             });
         }
 
+        if (!email.includes("@")) {
+            return res.status(400).json({
+                message: "Invalid email format"
+            });
+        }
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
@@ -44,7 +49,7 @@ export const registerUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role || "user",
+            role: "user",
         });
 
         return res.status(201).json({
@@ -96,10 +101,15 @@ export const loginUser = async (req, res) => {
             }
         );
 
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "strict",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
 
         return res.status(200).json({
             message: "Login successful",
-            token,
         });
 
 
@@ -110,4 +120,14 @@ export const loginUser = async (req, res) => {
         });
 
     }
+};
+
+export const logoutUser = async (req, res) => {
+
+    res.clearCookie("token");
+
+    return res.status(200).json({
+        message: "Logout successful"
+    });
+
 };

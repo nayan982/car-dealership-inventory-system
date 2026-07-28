@@ -58,7 +58,7 @@ describe("User Login", () => {
 
     });
 
-    test("should return JWT token after successful login", async () => {
+    test("should return JWT token in HTTP-only cookie after successful login", async () => {
 
         await request(app)
             .post("/api/auth/register")
@@ -76,10 +76,9 @@ describe("User Login", () => {
                 password: "12345678",
             });
 
-
         expect(response.status).toBe(200);
-
-        expect(response.body).toHaveProperty("token");
+        expect(response.headers["set-cookie"]).toBeDefined();
+        expect(response.headers["set-cookie"][0]).toContain("token=");
 
     });
 });

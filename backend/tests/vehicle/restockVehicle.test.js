@@ -1,42 +1,41 @@
 import request from "supertest";
 import app from "../../app.js";
-
+import bcrypt from "bcrypt";
+import User from "../../src/models/User.js";
 
 describe("Restock Vehicle", () => {
 
     test("should restock vehicle by admin", async () => {
 
+        // Create admin user directly
+        const hashedPassword = await bcrypt.hash(
+            "12345678",
+            10
+        );
 
-        // Register admin
-        await request(app)
-            .post("/api/auth/register")
-            .send({
-                name: "Admin",
-                email: "restock@test.com",
-                password: "12345678",
-                role: "admin"
-            });
+        await User.create({
+            name: "Admin",
+            email: "admin@test.com",
+            password: hashedPassword,
+            role: "admin",
+        });
 
+        const agent = request.agent(app);
 
         // Login admin
-        const loginResponse = await request(app)
+        const loginResponse = await agent
             .post("/api/auth/login")
             .send({
-                email: "restock@test.com",
-                password: "12345678"
+                email: "admin@test.com",
+                password: "12345678",
             });
-
 
         const token = loginResponse.body.token;
 
 
         // Create vehicle
-        const vehicleResponse = await request(app)
+        const vehicleResponse = await agent
             .post("/api/vehicles")
-            .set(
-                "Authorization",
-                `Bearer ${token}`
-            )
             .send({
                 make: "Toyota",
                 model: "Fortuner",
@@ -50,12 +49,8 @@ describe("Restock Vehicle", () => {
 
 
         // Restock
-        const response = await request(app)
+        const response = await agent
             .patch(`/api/vehicles/${vehicleId}/restock`)
-            .set(
-                "Authorization",
-                `Bearer ${token}`
-            )
             .send({
                 quantity: 10
             });

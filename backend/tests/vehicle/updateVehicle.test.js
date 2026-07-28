@@ -1,38 +1,41 @@
 import request from "supertest";
 import app from "../../app.js";
 import Vehicle from "../../src/models/Vehicle.js";
+import bcrypt from "bcrypt";
+import User from "../../src/models/User.js";
 
 describe("Update Vehicle", () => {
 
     test("should update vehicle details", async () => {
 
-        // Register
-        await request(app)
-            .post("/api/auth/register")
-            .send({
-                name: "Admin",
-                email: "update@test.com",
-                password: "12345678",
-                role: "admin",
-            });
+        // Create admin user directly
+        const hashedPassword = await bcrypt.hash(
+            "12345678",
+            10
+        );
 
+        await User.create({
+            name: "Admin",
+            email: "admin@test.com",
+            password: hashedPassword,
+            role: "admin",
+        });
 
-        // Login
-        const loginResponse = await request(app)
+const agent = request.agent(app);
+        // Login admin
+        const loginResponse = await agent
             .post("/api/auth/login")
             .send({
-                email: "update@test.com",
+                email: "admin@test.com",
                 password: "12345678",
             });
-
 
         const token = loginResponse.body.token;
 
 
         // Create vehicle
-        const vehicleResponse = await request(app)
+        const vehicleResponse = await agent
             .post("/api/vehicles")
-            .set("Authorization", `Bearer ${token}`)
             .send({
                 make: "Toyota",
                 model: "Fortuner",
@@ -46,9 +49,8 @@ describe("Update Vehicle", () => {
 
 
         // Update vehicle
-        const response = await request(app)
+        const response = await agent
             .put(`/api/vehicles/${vehicleId}`)
-            .set("Authorization", `Bearer ${token}`)
             .send({
                 price: 5000000,
                 quantity: 10,
