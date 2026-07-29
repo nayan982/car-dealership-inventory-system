@@ -1,9 +1,10 @@
 import Order from "../models/Order.js";
 import Vehicle from "../models/Vehicle.js";
+import mongoose from "mongoose";
 
 export const createVehicle = async (req, res) => {
   try {
-    const { make, model, year, category, price, quantity, color, fuelType, transmission, engine, mileage,seatingCapacity, image, description } = req.body;
+    const { make, model, year, category, price, quantity, color, fuelType, transmission, engine, mileage, seatingCapacity, image, description } = req.body;
 
     const vehicle = await Vehicle.create({
       make,
@@ -61,22 +62,28 @@ export const getVehicles = async (req, res) => {
 
 export const searchVehicles = async (req, res) => {
   try {
-    const { make, model, category, minPrice, maxPrice } = req.query;
+    const { q, category, minPrice, maxPrice } = req.query;
 
     const filter = {};
 
-    if (make) {
-      filter.make = new RegExp(make, "i");
-    }
+    if (q) {
+      const searchRegex = new RegExp(q, "i");
 
-    if (model) {
-      filter.model = new RegExp(model, "i");
-    }
+      filter.$or = [
+        { make: searchRegex },
+        { model: searchRegex }
+      ];
 
+      // If the search text is a number, dynamically add the year query too
+      if (!isNaN(q) && q.trim() !== "") {
+        filter.$or.push({ year: Number(q) });
+      }
+    }
     if (category) {
-      filter.category = new RegExp(category, "i");
+      filter.category = category;
     }
 
+    // Pricing range evaluation bounds
     if (minPrice || maxPrice) {
       filter.price = {};
 
@@ -88,6 +95,29 @@ export const searchVehicles = async (req, res) => {
         filter.price.$lte = Number(maxPrice);
       }
     }
+    // if (make) {
+    //   filter.make = new RegExp(make, "i");
+    // }
+
+    // if (model) {
+    //   filter.model = new RegExp(model, "i");
+    // }
+
+    // if (category) {
+    //   filter.category = new RegExp(category, "i");
+    // }
+
+    // if (minPrice || maxPrice) {
+    //   filter.price = {};
+
+    //   if (minPrice) {
+    //     filter.price.$gte = Number(minPrice);
+    //   }
+
+    //   if (maxPrice) {
+    //     filter.price.$lte = Number(maxPrice);
+    //   }
+    // }
 
     const vehicles = await Vehicle.find(filter);
 
@@ -265,3 +295,34 @@ export const restockVehicle = async (req, res) => {
   }
 
 };
+
+export const getVehiclesDetails = async (req, res) => {
+
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        message: "Invalid vehicle ID",
+      });
+    }
+
+    const vehicle = await Vehicle.findById(id);
+
+    if (!vehicle) {
+      return res.status(404).json({
+        message: "Vehicle not found"
+      });
+    }
+
+    return res.status(200).json(vehicle);
+
+  } catch (error) {
+console.log(error);
+console.log(error.message)
+    return res.status(500).json({
+      message: "Internal Server Error",
+    });
+
+  }
+}

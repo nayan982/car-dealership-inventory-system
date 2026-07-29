@@ -128,6 +128,36 @@ export const loginUser = async (req, res) => {
     }
 };
 
+export const getMe = async (req, res) => {
+    try {
+
+        if (!req.user) {
+            return res.status(401).json({
+                message: "Not authenticated",
+            });
+        }
+
+        const fullUser = await User.findById(req.user.id).select("-password");
+
+        if (!fullUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({
+            user: {
+                id: fullUser._id,
+                name: fullUser.name,
+                email: fullUser.email,
+                role: fullUser.role,
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
+    }
+};
+
 export const logoutUser = async (req, res) => {
 
     res.clearCookie("token");
