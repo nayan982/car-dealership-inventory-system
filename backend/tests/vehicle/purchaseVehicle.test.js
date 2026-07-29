@@ -61,11 +61,18 @@ describe("Purchase Vehicle", () => {
 
         // Purchase vehicle
         const response = await agent
-            .post(`/api/vehicles/${vehicleId}/purchase`);
+            .post(`/api/vehicles/${vehicleId}/purchase`)
+            .send({
+                address: "Delhi, India",
+                phone: "9876543210"
+            });
 
         expect(response.status).toBe(200);
         expect(response.body.vehicle.quantity)
             .toBe(4);
+        expect(response.body.order).toBeDefined();
+        expect(response.body.order.status).toBe("Pending");
+        expect(response.body.order.paymentMethod).toBe("COD");
 
     });
 
@@ -123,7 +130,11 @@ describe("Purchase Vehicle", () => {
 
         // Try purchasing
         const response = await agent
-            .post(`/api/vehicles/${vehicleId}/purchase`);
+            .post(`/api/vehicles/${vehicleId}/purchase`)
+            .send({
+                address: "Delhi, India",
+                phone: "9876543210"
+            });
 
         expect(response.status).toBe(400);
 

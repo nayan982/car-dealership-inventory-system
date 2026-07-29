@@ -1,3 +1,4 @@
+import Order from "../models/Order.js";
 import Vehicle from "../models/Vehicle.js";
 
 export const createVehicle = async (req, res) => {
@@ -172,48 +173,56 @@ export const deleteVehicle = async (req, res) => {
 };
 
 export const purchaseVehicle = async (req, res) => {
-
   try {
-
     const { id } = req.params;
-
+    const { address, phone, quantity = 1 } = req.body;
 
     const vehicle = await Vehicle.findById(id);
 
-
     if (!vehicle) {
       return res.status(404).json({
-        message: "Vehicle not found"
+        message: "Vehicle not found",
       });
     }
 
-
-    if (vehicle.quantity <= 0) {
+    if (vehicle.quantity < quantity) {
       return res.status(400).json({
-        message: "Vehicle is out of stock"
+        message: "Vehicle is out of stock",
       });
     }
 
+    if (!address || !phone) {
+      return res.status(400).json({
+        message: "Address and phone are required",
+      });
+    }
 
-    vehicle.quantity -= 1;
-
+    vehicle.quantity -= quantity;
     await vehicle.save();
 
+    const order = await Order.create({
+      user: req.user.id,
+      vehicle: vehicle._id,
+      quantity,
+      totalPrice: vehicle.price * quantity,
+      paymentMethod: "COD",
+      address,
+      phone,
+    });
 
     return res.status(200).json({
       message: "Vehicle purchased successfully",
-      vehicle
+      vehicle,
+      order,
     });
-
 
   } catch (error) {
+    console.log(error);
 
     return res.status(500).json({
-      message: error.message
+      message: "Internal Server Error",
     });
-
   }
-
 };
 
 export const restockVehicle = async (req, res) => {
