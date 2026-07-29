@@ -117,7 +117,7 @@ const Contact = () => {
               value={values.name}
               onChange={handleChange}
               error={errors.name}
-              placeholder="Jordan Lee"
+              placeholder="Rahul Sharma"
             />
 
             <FormField

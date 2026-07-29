@@ -134,7 +134,7 @@ const VehicleDetails = () => {
                   Out of Stock
                 </div>
               ) : (
-                <Button onClick={handlePurchaseClick} size="lg" className="w-full sm:w-auto">
+                <Button onClick={handlePurchaseClick} size="lg" className="w-full sm:w-auto cursor-pointer">
                   Purchase Vehicle
                 </Button>
               )}

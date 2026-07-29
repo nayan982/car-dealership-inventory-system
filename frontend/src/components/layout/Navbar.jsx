@@ -170,7 +170,7 @@ const Navbar = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-1.5 rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-fog transition hover:border-ember/60 hover:text-ember"
+              className="flex items-center gap-1.5 rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-fog transition hover:border-ember/60 hover:text-ember cursor-pointer"
             >
               <FiLogOut size={15} />
               Logout

@@ -54,7 +54,7 @@ const Register = () => {
             value={values.name}
             onChange={handleChange}
             error={errors.name}
-            placeholder="Jordan Lee"
+            placeholder="Rahul Sharma"
           />
           <FormField
             label="Email"
@@ -72,7 +72,7 @@ const Register = () => {
             value={values.password}
             onChange={handleChange}
             error={errors.password}
-            placeholder="At least 6 characters"
+            placeholder="At least 8 characters"
           />
           
           <Button type="submit" loading={submitting} className="w-full" icon={FiUserPlus}>

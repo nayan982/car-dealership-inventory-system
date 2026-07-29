@@ -128,6 +128,7 @@ const VehicleForm = ({
             value={values.price}
             onChange={handleChange}
             error={errors.price}
+            placeholder="2700000"
           />
 
           <FormField
@@ -137,6 +138,7 @@ const VehicleForm = ({
             value={values.quantity}
             onChange={handleChange}
             error={errors.quantity}
+            placeholder="5"
           />
 
           <FormField
@@ -145,6 +147,7 @@ const VehicleForm = ({
             value={values.color}
             onChange={handleChange}
             error={errors.color}
+            placeholder="Black"
           />
 
           <FormField
@@ -185,6 +188,7 @@ const VehicleForm = ({
             label="Engine"
             name="engine"
             value={values.engine}
+            placeholder="2.5L I4"
             onChange={handleChange}
             error={errors.engine}
           />
@@ -196,6 +200,7 @@ const VehicleForm = ({
             value={values.mileage}
             onChange={handleChange}
             error={errors.mileage}
+            placeholder="15"
           />
 
           <FormField
@@ -205,6 +210,7 @@ const VehicleForm = ({
             value={values.seatingCapacity}
             onChange={handleChange}
             error={errors.seatingCapacity}
+            placeholder="5"
           />
         </div>
 
