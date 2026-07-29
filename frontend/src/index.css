@@ -1,1 +1,105 @@
 @import "tailwindcss";
+
+@theme {
+  /* Color system */
+  --color-obsidian: #0b0c0e;
+  --color-obsidian-2: #131417;
+  --color-obsidian-3: #1c1e22;
+  --color-steel: #8a8f98;
+  --color-steel-light: #b8bcc2;
+  --color-fog: #f5f5f0;
+  --color-ember: #ff5a36;
+  --color-ember-light: #ff7a5c;
+  --color-ember-dark: #d43f1f;
+  --color-signal: #00e5c7;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes rev {
+  0%, 100% { stroke-dashoffset: 226; }
+  50% { stroke-dashoffset: 40; }
+}
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #d43f1f #131417;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-obsidian);
+  color: var(--color-fog);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-obsidian);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  background: rgba(19, 20, 23, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(120deg, #ff5a36 0%, #ff9466 50%, #ffd6a3 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #16181c 25%, #202329 37%, #16181c 63%);
+  background-size: 800px 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.animate-marquee { animation: marquee 28s linear infinite; }
+.animate-rev { animation: rev 1.6s ease-in-out infinite; }
+
+.speed-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 90, 54, 0.6), transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-ember);
+  outline-offset: 2px;
+}
