@@ -38,9 +38,18 @@ describe("Search Vehicles", () => {
             .send({
                 make: "Toyota",
                 model: "Fortuner",
+                year: 2024,
                 category: "SUV",
                 price: 4500000,
                 quantity: 5,
+                color: "White",
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                engine: "2.8L Diesel",
+                mileage: "14 km/l",
+                seatingCapacity: 7,
+                image: "https://example.com/fortuner.jpg",
+                description: "Premium 7-seater SUV with advanced safety features."
             });
 
         // Vehicle 2
@@ -49,9 +58,18 @@ describe("Search Vehicles", () => {
             .send({
                 make: "Honda",
                 model: "City",
+                year: 2024,
                 category: "Sedan",
                 price: 1800000,
                 quantity: 8,
+                color: "Black",
+                fuelType: "Petrol",
+                transmission: "Manual",
+                engine: "1.5L Petrol",
+                mileage: "15 km/l",
+                seatingCapacity: 5,
+                image: "https://example.com/city.jpg",
+                description: "Affordable sedan with good fuel efficiency."
             });
 
         const response = await agent
@@ -98,9 +116,18 @@ describe("Search Vehicles", () => {
             .send({
                 make: "Toyota",
                 model: "Fortuner",
+                year: 2024,
                 category: "SUV",
                 price: 4500000,
                 quantity: 5,
+                color: "White",
+                fuelType: "Diesel",
+                transmission: "Automatic",
+                engine: "2.8L Diesel",
+                mileage: "14 km/l",
+                seatingCapacity: 7,
+                image: "https://example.com/fortuner.jpg",
+                description: "Premium 7-seater SUV with advanced safety features."
             });
 
 
@@ -110,9 +137,18 @@ describe("Search Vehicles", () => {
             .send({
                 make: "Honda",
                 model: "City",
+                year: 2024,
                 category: "Sedan",
                 price: 1800000,
                 quantity: 8,
+                color: "Black",
+                fuelType: "Petrol",
+                transmission: "Manual",
+                engine: "1.5L Petrol",
+                mileage: "15 km/l",
+                seatingCapacity: 5,
+                image: "https://example.com/city.jpg",
+                description: "Affordable sedan with good fuel efficiency."
             });
 
 

@@ -2,14 +2,23 @@ import Vehicle from "../models/Vehicle.js";
 
 export const createVehicle = async (req, res) => {
   try {
-    const { make, model, category, price, quantity } = req.body;
+    const { make, model, year, category, price, quantity, color, fuelType, transmission, engine, mileage,seatingCapacity, image, description } = req.body;
 
     const vehicle = await Vehicle.create({
       make,
       model,
+      year,
       category,
       price,
       quantity,
+      color,
+      fuelType,
+      transmission,
+      engine,
+      mileage,
+      seatingCapacity,
+      image,
+      description
     });
 
     if (quantity < 0) {
@@ -24,9 +33,9 @@ export const createVehicle = async (req, res) => {
     });
 
   } catch (error) {
-
+    console.log(error);
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: error.message || "Internal Server Error",
     });
 
   }

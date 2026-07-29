@@ -39,9 +39,22 @@ describe("Create Vehicle", () => {
       .send({
         make: "Toyota",
         model: "Fortuner",
+        year: 2024,
         category: "SUV",
         price: 4500000,
         quantity: 10,
+
+        color: "White",
+        fuelType: "Diesel",
+        transmission: "Automatic",
+
+        engine: "2.8L Diesel",
+        mileage: "14 km/l",
+        seatingCapacity: 7,
+
+        image: "https://example.com/fortuner.jpg",
+
+        description: "Premium 7-seater SUV with advanced safety features."
       });
 
 
