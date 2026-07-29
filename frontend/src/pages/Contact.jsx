@@ -15,12 +15,12 @@ const contactInfo = [
   {
     icon: FiMapPin,
     label: "Showroom",
-    value: "221 Falcon Way, Austin, TX 78701",
+    value: "45 MG Road, Bengaluru, Karnataka, India",
   },
   {
     icon: FiPhone,
     label: "Phone",
-    value: "+1 (555) 019-2280",
+    value: "+91 98765 43210",
   },
   {
     icon: FiMail,

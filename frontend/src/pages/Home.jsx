@@ -24,8 +24,8 @@ const whyChooseUs = [
 
 const testimonials = [
   { name: "Priya N.", role: "Verified Buyer", text: "The listing was accurate down to the mileage. Delivery was faster than the estimate.", rating: 5 },
-  { name: "Marcus D.", role: "Verified Buyer", text: "Ordering felt like buying a flagship phone, not a car. Genuinely impressed.", rating: 5 },
-  { name: "Elena R.", role: "Verified Buyer", text: "Cash on delivery made the whole process low-stress. Would order again.", rating: 4 },
+  { name: "Rahul S.", role: "Verified Buyer", text: "Ordering felt like buying a flagship phone, not a car. Genuinely impressed.", rating: 5 },
+  { name: "Ashish R.", role: "Verified Buyer", text: "Cash on delivery made the whole process low-stress. Would order again.", rating: 4 },
 ];
 
 const Home = () => {
@@ -126,7 +126,7 @@ const Home = () => {
               </div>
               <div className="glass absolute -bottom-6 -left-6 hidden rounded-2xl px-5 py-4 sm:block">
                 <p className="font-mono text-[11px] uppercase tracking-widest text-steel">Starting at</p>
-                <p className="font-display text-xl font-bold text-fog">$28,400</p>
+                <p className="font-display text-xl font-bold text-fog">₹ 2,718,950</p>
               </div>
             </motion.div>
           </div>
