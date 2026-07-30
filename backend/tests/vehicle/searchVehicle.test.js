@@ -73,7 +73,7 @@ describe("Search Vehicles", () => {
             });
 
         const response = await agent
-            .get("/api/vehicles/search?make=Toyota");
+            .get("/api/vehicles/search?q=Toyota");
 
         expect(response.status).toBe(200);
         expect(response.body.length).toBe(1);

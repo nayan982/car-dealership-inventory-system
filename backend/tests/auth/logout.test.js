@@ -9,7 +9,13 @@ test("should logout user",async()=>{
 
     const agent=request.agent(app);
 
-
+  await request(app)
+            .post("/api/auth/register")
+            .send({
+                name: "user",
+                email: "user@test.com",
+                password: "12345678",
+            });
     await agent
     .post("/api/auth/login")
     .send({

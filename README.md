@@ -244,6 +244,85 @@ Optimized for
 
 ---
 
+# 🧪 Testing
+
+The backend of KESTREL Motors includes automated API testing to verify core functionality and ensure application reliability.
+
+## Testing Tools
+
+- **Jest** – JavaScript testing framework
+- **Supertest** – HTTP endpoint testing
+- **MongoDB** – Test database for isolated execution
+
+---
+
+## Test Coverage
+
+| Module | Test Cases |
+|---------|------------|
+| Authentication | Register, Login, Logout, Auth Middleware |
+| Vehicle Management | Create, Update, Delete, Restock |
+| Vehicle Features | Get Vehicles, Search Vehicles, Purchase Vehicle |
+| Order Management | Get My Orders, Get All Orders, Update Order Status |
+| Dashboard | Dashboard Statistics |
+
+---
+
+## Test Summary
+
+```
+Test Suites: 15 passed, 15 total
+Tests:       32 passed, 32 total
+Snapshots:   0 total
+Status:      ✅ All tests passed
+```
+
+---
+
+## Running Tests
+
+Run all backend tests:
+
+```bash
+npm test
+```
+
+Run tests sequentially:
+
+```bash
+npm test -- --runInBand
+```
+
+---
+
+## Test Report
+
+<p align="center">
+  <img src="./assets/test-report.png" width="100%" alt="Backend Test Report">
+</p>
+
+## 🤖 My AI Usage
+
+During the development of this project, I used the following AI tools to assist my workflow:
+
+### AI Tools Used
+- ChatGPT
+- Claude AI
+
+### How I Used Them
+- Brainstormed UI layouts and component structure for the frontend.
+- Improved React component organization and code readability.
+- Helped debug frontend and backend issues.
+- Suggested better styling approaches using Tailwind CSS.
+- Assisted in generating documentation, including this README.
+- Provided explanations for concepts and implementation approaches when needed.
+
+### Reflection
+
+AI acted as a development assistant throughout the project by helping me explore ideas, debug issues, and improve code quality. I reviewed, modified, and integrated the suggestions into the project, which helped speed up development while ensuring I understood the implementation.
+
+---
+
 # 🔮 Future Improvements
 
 - 💳 Online Payment Gateway
