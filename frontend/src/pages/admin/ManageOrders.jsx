@@ -1,4 +1,4 @@
-import { useEffect, useState , useCallback} from "react";
+import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { FiShoppingBag } from "react-icons/fi";
 import SkeletonTable from "../../components/common/SkeletonTable";
@@ -46,6 +46,19 @@ const ManageOrders = () => {
     }
   };
 
+  const formatName = (str) => {
+    if (!str) return "";
+
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ");
+  };
   return (
     <div>
       <p className="font-mono text-xs uppercase tracking-[0.2em] text-ember">Fulfillment</p>
@@ -73,11 +86,11 @@ const ManageOrders = () => {
               {orders.map((order) => (
                 <tr key={order._id} className="border-b border-white/5 last:border-0">
                   <td className="p-4 text-fog">
-                    {order.user?.name || "—"}
+                    {formatName(order.user?.name) || "—"}
                     <p className="text-xs text-steel">{order.user?.email}</p>
                   </td>
                   <td className="p-4 text-steel-light">
-                    {order.vehicle?.make} {order.vehicle?.model}
+                    {formatName(order.vehicle?.make)} {formatName(order.vehicle?.model)}
                   </td>
                   <td className="p-4 text-steel-light">{order.quantity}</td>
                   <td className="p-4 font-medium text-fog">{formatCurrency(order.totalPrice)}</td>

@@ -4,7 +4,7 @@ export const FUEL_TYPES = ["Petrol", "Diesel", "Electric", "Hybrid"];
 
 export const TRANSMISSIONS = ["Automatic", "Manual", "CVT", "Dual-Clutch"];
 
-export const ORDER_STATUSES = ["Pending", "Confirmed", "Delivered", "Cancelled"];
+export const ORDER_STATUSES = ["Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"];
 
 export const PAYMENT_METHODS = ["Cash on Delivery"];
 

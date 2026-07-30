@@ -50,6 +50,19 @@ const ManageVehicles = () => {
     }
   };
 
+  const formatName = (str) => {
+    if (!str) return "";
+
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ");
+  };
   return (
     <div className="relative">
       <div className="flex items-center justify-between">
@@ -98,10 +111,10 @@ const ManageVehicles = () => {
                     <img src={v.image} alt={v.model} className="h-12 w-16 rounded-lg object-cover" />
                   </td>
                   <td className="p-4 text-fog">
-                    {v.make} {v.model}
+                    {formatName(v.make)} {formatName(v.model)}
                     <p className="text-xs text-steel">{v.year}</p>
                   </td>
-                  <td className="p-4 text-steel-light">{v.category}</td>
+                  <td className="p-4 text-steel-light">{formatName(v.category)}</td>
                   <td className="p-4 font-medium text-fog">{formatCurrency(v.price)}</td>
                   <td className="p-4">
                     <span className={Number(v.quantity) <= 0 ? "text-red-400" : "text-steel-light"}>

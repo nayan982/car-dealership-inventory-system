@@ -40,6 +40,19 @@ const AdminLayout = () => {
     }
   };
 
+  const formatName = (str) => {
+    if (!str) return "";
+
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ");
+  };
   const SidebarContent = () => (
     <div className="flex h-full flex-col">
       <Link to="/" className="flex items-center gap-2 px-6 py-6">
@@ -63,10 +76,9 @@ const AdminLayout = () => {
             to={to}
             onClick={closeSidebar}
             className={({ isActive }) =>
-              `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${
-                isActive
-                  ? "bg-ember/15 text-ember"
-                  : "text-steel hover:bg-white/5 hover:text-fog"
+              `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition ${isActive
+                ? "bg-ember/15 text-ember"
+                : "text-steel hover:bg-white/5 hover:text-fog"
               }`
             }
           >
@@ -89,7 +101,7 @@ const AdminLayout = () => {
           <div>
             <p className="text-xs text-steel">Signed in as</p>
             <p className="truncate text-sm font-medium text-fog">
-              {user?.name || "Admin"}
+              {formatName(user?.name) || "Admin"}
             </p>
           </div>
 

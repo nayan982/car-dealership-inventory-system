@@ -23,8 +23,9 @@ export const formatDate = (value) => {
 };
 
 export const statusColors = {
-  Pending: "bg-amber-400/15 text-amber-300 border-amber-400/30",
-  Confirmed: "bg-signal/15 text-signal border-signal/30",
+  Pending: "bg-yellow-400/15 text-yellow-300 border-yellow-400/30",
+  Confirmed: "bg-sky-400/15 text-sky-300 border-sky-400/30",
+  Shipped: "bg-indigo-400/15 text-indigo-300 border-indigo-400/30",
   Delivered: "bg-emerald-400/15 text-emerald-300 border-emerald-400/30",
   Cancelled: "bg-red-500/15 text-red-400 border-red-500/30",
 };

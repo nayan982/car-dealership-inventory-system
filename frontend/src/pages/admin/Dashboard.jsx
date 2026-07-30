@@ -33,7 +33,20 @@ const Dashboard = () => {
     load();
   }, []);
 
-  const totalRevenue = orders.filter((order) => order.status === "Confirmed")
+  const formatName = (str) => {
+    if (!str) return "";
+
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1)
+      )
+      .join(" ");
+  };
+  const totalRevenue = orders.filter((order) => order.status === "Delivered")
     .reduce((sum, order) => sum + (Number(order.totalPrice) || 0), 0);
   const outOfStock = vehicles.filter((v) => Number(v.quantity) <= 0).length;
   const recentOrders = [...orders]
@@ -79,9 +92,9 @@ const Dashboard = () => {
               <tbody>
                 {recentOrders.map((order) => (
                   <tr key={order._id} className="border-b border-white/5 last:border-0">
-                    <td className="p-4 text-fog">{order.user?.name || "—"}</td>
+                    <td className="p-4 text-fog">{formatName(order.user?.name) || "—"}</td>
                     <td className="p-4 text-steel-light">
-                      {order.vehicle?.make} {order.vehicle?.model}
+                      {formatName(order.vehicle?.make)} {formatName(order.vehicle?.model)}
                     </td>
                     <td className="p-4 font-medium text-fog">{formatCurrency(order.totalPrice)}</td>
                     <td className="p-4">

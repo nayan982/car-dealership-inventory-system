@@ -318,8 +318,6 @@ export const getVehiclesDetails = async (req, res) => {
     return res.status(200).json(vehicle);
 
   } catch (error) {
-console.log(error);
-console.log(error.message)
     return res.status(500).json({
       message: "Internal Server Error",
     });
