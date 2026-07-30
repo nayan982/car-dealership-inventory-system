@@ -17,7 +17,7 @@
 ## 📸 Project Preview
 
 <p align="center">
-  <img src="./assets/home.png" width="100%">
+  <img src="./assets/home.png" width="100%" alt="Home Page">
 </p>
 
 ---
@@ -25,22 +25,25 @@
 ## 🖼️ Screenshots
 
 <p align="center">
-  <img src="./assets/vehicle-listing.png" width="48%">
-  <img src="./assets/vehicle-details.png" width="48%">
+  <img src="./assets/vehicle-listing.png" width="47%" alt="Vehicle Listing">
+  &nbsp;
+  <img src="./assets/vehicle-details.png" width="47%" alt="Vehicle Details">
 </p>
 
 <p align="center">
-  <img src="./assets/login.png" width="48%">
-  <img src="./assets/admin-dashboard.png" width="48%">
+  <img src="./assets/login.png" width="47%" alt="Login">
+  &nbsp;
+  <img src="./assets/admin-dashboard.png" width="47%" alt="Admin Dashboard">
 </p>
 
 <p align="center">
-  <img src="./assets/manage-vehicles.png" width="48%">
-  <img src="./assets/manage-orders.png" width="48%">
+  <img src="./assets/manage-vehicles.png" width="47%" alt="Manage Vehicles">
+  &nbsp;
+  <img src="./assets/manage-orders.png" width="47%" alt="Manage Orders">
 </p>
 
 <p align="center">
-  <img src="./assets/mobile-home.png" width="30%">
+  <img src="./assets/mobile-home.png" width="30%" alt="Mobile Home">
 </p>
 
 # ✨ Features
